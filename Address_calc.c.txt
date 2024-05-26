@@ -1,0 +1,80 @@
+//Page_Segmentation
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <math.h> 
+ 
+#define SEGMENT_SIZE 1024 
+#define PAGE_SIZE 256 
+ 
+typedef struct { 
+    int segmentNumber; 
+    int baseAddress; 
+    int limit; 
+} SegmentTableEntry; 
+ 
+typedef struct { 
+    int pageNumber; 
+    int frameNumber; 
+} PageTableEntry; 
+ 
+int translateAddressSegmentation(int logicalAddress, SegmentTableEntry segmentTable[], int segmentCount) { 
+    int segmentNumber = logicalAddress / SEGMENT_SIZE; 
+    int offset = logicalAddress % SEGMENT_SIZE; 
+ 
+    if (segmentNumber < segmentCount) { 
+        if (offset < segmentTable[segmentNumber].limit) { 
+            int physicalAddress = segmentTable[segmentNumber].baseAddress + offset; 
+            return physicalAddress; 
+        } else { 
+            printf("Segmentation Fault: Offset exceeds segment limit\n"); 
+            return -1; 
+        } 
+    } else { 
+        printf("Segmentation Fault: Segment number exceeds segment count\n"); 
+        return -1; 
+    } 
+} 
+ 
+int translateAddressPaging(int logicalAddress, PageTableEntry pageTable[], int pageCount) { 
+    int pageNumber = logicalAddress / PAGE_SIZE; 
+    int offset = logicalAddress % PAGE_SIZE; 
+ 
+    if (pageNumber < pageCount) { 
+        int frameNumber = pageTable[pageNumber].frameNumber; 
+        int physicalAddress = (frameNumber * PAGE_SIZE) + offset; 
+        return physicalAddress; 
+    } else { 
+        printf("Page Fault: Page number exceeds page count\n"); 
+        return -1; 
+    } 
+} 
+ 
+int main() { 
+    SegmentTableEntry segmentTable[4] = { 
+        {0, 0, 1023}, 
+        {1, 1024, 511}, 
+        {2, 1536, 255}, 
+        {3, 1792, 511} 
+    }; 
+ 
+    PageTableEntry pageTable[4] = { 
+        {0, 2}, 
+        {1, 3}, 
+        {2, 1}, 
+        {3, 0} 
+    }; 
+ 
+    int logicalAddress = 883; 
+ 
+    int physicalAddressSegmentation = translateAddressSegmentation(logicalAddress, segmentTable, 4); 
+    if (physicalAddressSegmentation != -1) { 
+        printf("Physical Address (Segmentation): %d\n", physicalAddressSegmentation); 
+    } 
+ 
+    int physicalAddressPaging = translateAddressPaging(logicalAddress, pageTable, 4); 
+    if (physicalAddressPaging != -1) { 
+        printf("Physical Address (Paging): %d\n", physicalAddressPaging); 
+    } 
+ 
+    return 0; 
+}
