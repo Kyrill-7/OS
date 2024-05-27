@@ -1,0 +1,77 @@
+#Shell String
+#!/bin/bash
+
+# Define a sample string
+string="Hello World!"
+
+# 1. Length of the string
+echo "Length of the string: ${#string}"
+
+# 2. Extracting substring
+substring="${string:6}"
+echo "Substring from index 6: $substring"
+
+# 3. Substring with specified length
+substring_with_length="${string:6:5}"
+echo "Substring from index 6 with length 5: $substring_with_length"
+
+# 4. Concatenating strings
+string1="Hello"
+string2="World"
+concatenated="$string1 $string2"
+echo "Concatenated string: $concatenated"
+
+# 5. String concatenation using +=
+string1+=" again"
+echo "String concatenation using +=: $string1"
+
+# 6. Searching for a substring
+if [[ $string == *"Hello"* ]]; then
+    echo "Substring 'Hello' found in the string"
+else
+    echo "Substring 'Hello' not found in the string"
+fi
+
+# 7. Replacing substring
+replaced="${string/World/Universe}"
+echo "String after replacing 'World' with 'Universe': $replaced"
+
+# 8. Replacing all occurrences of substring
+replaced_all="${string//o/a}"
+echo "String after replacing all 'o's with 'a's: $replaced_all"
+
+# 9. Uppercase conversion
+uppercase="${string^^}"
+echo "Uppercase string: $uppercase"
+
+# 10. Lowercase conversion
+lowercase="${string,,}"
+echo "Lowercase string: $lowercase"
+
+# 11. Checking if string is empty
+if [ -z "$string" ]; then
+    echo "String is empty"
+else
+    echo "String is not empty"
+fi
+
+# 12. Checking if string is not empty
+if [ -n "$string" ]; then
+    echo "String is not empty"
+else
+    echo "String is empty"
+fi
+
+# 13. Checking if string contains only digits
+if [[ $string =~ ^[0-9]+$ ]]; then
+    echo "String contains only digits"
+else
+    echo "String does not contain only digits"
+fi
+
+# 14. Splitting string into an array
+IFS=' ' read -r -a array <<< "$string"
+echo "Splitting string into an array:"
+for element in "${array[@]}"; do
+    echo "$element"
+done

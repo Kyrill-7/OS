@@ -1,0 +1,20 @@
+#Shell_Arith
+#!/bin/bash
+
+# Addition
+num1=10
+num2=5
+addition=$(expr $num1 + $num2)
+echo "Addition: $addition"
+
+# Subtraction
+subtraction=$(expr $num1 - $num2)
+echo "Subtraction: $subtraction"
+
+# Multiplication
+multiplication=$(expr $num1 \* $num2)
+echo "Multiplication: $multiplication"
+
+# Division
+division=$(expr $num1 / $num2)
+echo "Division: $division"
